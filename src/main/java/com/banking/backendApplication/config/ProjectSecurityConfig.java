@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -33,51 +34,9 @@ public class ProjectSecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public InMemoryUserDetailsManager inMemoryUserDetails() {
-//
-//        //Approach1 :- use default password encoder
-//
-////        UserDetails admin = User.withDefaultPasswordEncoder()
-////                .username("Shivam")
-////                .password("1234")
-////                .authorities("admin")
-////                .build();
-////
-////        UserDetails user = User.withDefaultPasswordEncoder()
-////                .username("Chavi")
-////                .password("1234")
-////                .authorities("read")
-////                .build();
-////        return new InMemoryUserDetailsManager(admin,user);
-//
-//
-//        //Approach 2 -: NoOpPasswordEncoder
-//
-//        UserDetails admin = User.withUsername("Shivam")
-//                .password("1234")
-//                .authorities("admin")
-//                .build();
-//
-//        UserDetails user = User.withUsername("Chavi")
-//                .password("1234")
-//                .authorities("read")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(admin,user);
-//    }
-
-
-//       //Approach 3 -: Using JDBC user details manager
-
-//    @Bean
-//    public JdbcUserDetailsManager userDetailsService(DataSource dataSource) {
-//        return new JdbcUserDetailsManager(dataSource);
-//    }
-
     @Bean
     PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 
 }
