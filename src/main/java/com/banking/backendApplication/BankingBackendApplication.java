@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-//reuired only when you have classes outside the parent package
 public class BankingBackendApplication {
 
 	public static void main(String[] args) {
