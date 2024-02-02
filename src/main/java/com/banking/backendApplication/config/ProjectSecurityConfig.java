@@ -1,6 +1,9 @@
 package com.banking.backendApplication.config;
 
+import com.banking.backendApplication.filter.AuthoritiesLoggingAfterFilter;
+import com.banking.backendApplication.filter.AuthoritiesLoggingAtFilter;
 import com.banking.backendApplication.filter.CsrfCookieFilter;
+import com.banking.backendApplication.filter.RequestValidationBeforeFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.mapping.Collection;
 import org.springframework.context.annotation.Bean;
@@ -58,6 +61,9 @@ public class ProjectSecurityConfig {
                         .ignoringRequestMatchers("/contact", "/register")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
+                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests)->requests
 //                        .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
 //                        .requestMatchers("/myBalance").hasAnyAuthority("VIEWACCOUNT", "VIEWBALANCE")
