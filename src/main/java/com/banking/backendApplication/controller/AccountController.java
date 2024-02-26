@@ -1,11 +1,15 @@
 package com.banking.backendApplication.controller;
 
 import com.banking.backendApplication.model.Accounts;
+import com.banking.backendApplication.model.Customer;
 import com.banking.backendApplication.repository.AccountsRepository;
+import com.banking.backendApplication.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class AccountController {
@@ -13,9 +17,18 @@ public class AccountController {
     @Autowired
     private AccountsRepository accountsRepository;
 
-    @GetMapping("/myAccount")
-    public Accounts getAccountDetails(@RequestParam int id) {
-        return accountsRepository.findByCustomerId(id);
-    }
+    @Autowired
+    private CustomerRepository customerRepository;
 
+    @GetMapping("/myAccount")
+    public Accounts getAccountDetails(@RequestParam String email) {
+        List<Customer> customers = customerRepository.findByEmail(email);
+        if (customers != null && !customers.isEmpty()) {
+            Accounts accounts = accountsRepository.findByCustomerId(customers.get(0).getId());
+            if (accounts != null) {
+                return accounts;
+            }
+        }
+        return null;
+    }
 }
